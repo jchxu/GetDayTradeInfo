@@ -11,11 +11,15 @@ codelist = ['RB.SHF','HC.SHF','I.DCE','J.DCE','JM.DCE']
 
 code = ','.join(codelist)
 w.start()
+w.isconnected()
+
 
 def  MyWSQCallback(indata):
     if indata.ErrorCode != 0:
         print('error code:' + str(indata.ErrorCode))
         return ()
+    print(indata.Data[0][0])
+    print(indata)
     for i in range(len(indata.Codes)):
         rt_code = indata.Codes[i]
         rt_date = str(indata.Data[0][i]).split('.')[0]
@@ -29,9 +33,11 @@ def  MyWSQCallback(indata):
         print(tradeline)
 
 tradeinfo = w.wsq(code, "rt_date,rt_time,rt_last,rt_last_vol,rt_oi_change,rt_nature",func=MyWSQCallback)
-#tradeinfo = w.wsq(code, "rt_date,rt_time,rt_last,rt_last_vol,rt_oi_change,rt_nature")
+#tradeinfo = w.wsq("RB.SHF", "rt_date,rt_time,rt_last,rt_last_vol,rt_oi_change,rt_nature",func=MyWSQCallback)
 print(tradeinfo)
-
+i = 1
+while i > 0:
+    print()
 #while CheckTime(timelist):  #检查是否在交易时间段内
 #    interval = CalcInterval(timeinterval, timelist)    #返回读取当天交易数据的时间间隔
 #    time.sleep(interval)    #暂停时间间隔后再进行操作
@@ -39,3 +45,5 @@ print(tradeinfo)
 #    WriteTick(codelist,tradedata)   #保存实时交易数据
 #    clearvalue(tradedata)
 #w.stop()
+
+# w.cancelRequest(0)
