@@ -20,9 +20,9 @@ nowdate = '_' + str(datetime.now().year) + str(datetime.now().month) + str(datet
 for item in codelist:
     rt_date[item] = ''
     rt_time[item] = ''
-    rt_last[item] = ''
-    rt_last_vol[item] = ''
-    rt_oi_change[item] = ''
+    rt_last[item] = 0
+    rt_last_vol[item] = 0
+    rt_oi_change[item] = 0
     rt_nature[item] = 0
     oldline[item] = []
     filename = item + nowdate + ".csv"
@@ -32,8 +32,6 @@ for item in codelist:
         codefile[item] = open(filename, 'a')
         print('code','rt_date','rt_time','rt_last','rt_last_vol','rt_oi_change','rt_nature',sep=',',file=codefile[item])
         codefile[item].flush()
-
-w.start()
 
 def  MyWSQCallback(indata):
     global oldline
@@ -58,7 +56,10 @@ def  MyWSQCallback(indata):
             print(rt_code,rt_date[rt_code],rt_time[rt_code],rt_last[rt_code],rt_last_vol[rt_code],rt_oi_change[rt_code],rt_nature[rt_code],sep=',',file=codefile[rt_code])
             codefile[rt_code].flush()
             oldline[rt_code] = line
+
+w.start()
+
 tradeinfo = w.wsq("RB.SHF,HC.SHF,I.DCE,J.DCE,JM.DCE", "rt_date,rt_time,rt_last,rt_last_vol,rt_oi_change,rt_nature",func=MyWSQCallback)
 
-w.cancelRequest(0)
+#w.cancelRequest(0)
 
