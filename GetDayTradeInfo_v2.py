@@ -2,7 +2,7 @@
 
 from WindPy import w
 from datetime import datetime,timedelta
-import os
+#import os
 
 codelist = ['RB.SHF','HC.SHF','I.DCE','J.DCE','JM.DCE']
 code = ','.join(codelist)
@@ -16,7 +16,7 @@ rt_nature = {}
 codefile = {}
 oldline = {}
 
-nowdate = '_' + str(datetime.now().year) + str(datetime.now().month) + str(datetime.now().day)
+#nowdate = '_' + str(datetime.now().year) + str(datetime.now().month) + str(datetime.now().day)
 
 for item in codelist:
     rt_date[item] = ''
@@ -55,7 +55,7 @@ def  MyWSQCallback(indata):
     for i in range(len(indata.Codes)):
         rt_code = indata.Codes[i]
         filename = rt_code + '_' + datestr + ".csv"
-        codefile[rt_code] = open(filename, mode = 'w')
+        codefile[rt_code] = open(filename, mode = 'a')
         for j in range(len(indata.Fields)):
             if (indata.Fields[j] == "RT_DATE"):
                 rt_date[rt_code] = str(indata.Data[j][i]).split('.')[0]
@@ -80,5 +80,5 @@ w.start()
 
 tradeinfo = w.wsq("RB.SHF,HC.SHF,I.DCE,J.DCE,JM.DCE", "rt_date,rt_time,rt_last,rt_last_vol,rt_oi_change,rt_nature",func=MyWSQCallback)
 
-#w.cancelRequest(0)
+w.cancelRequest(0)
 
